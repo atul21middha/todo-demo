@@ -34,7 +34,7 @@ const TaskList = ({taskList, onDeleteTask, onClickEditTask, onMarkCompleteTask})
           })}
         </>
         :
-        <div className="align-content-center text-center">
+        <div className="align-content-center text-center align-items-center" >
           Oops! No Task Found.
         </div>
       }

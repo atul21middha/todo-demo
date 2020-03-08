@@ -5,7 +5,7 @@ import {Button, Modal} from "react-bootstrap";
 const AddTask = ({onToggleIsAddTaskModal, selectedTask, isAddTaskOpen, onEditTask, onAddTask}) => {
 
   const [title, setTitle] = useState(selectedTask ? selectedTask.title : "");
-  const [status, setStatus] = useState(selectedTask ? selectedTask.status : null);
+  const [status, setStatus] = useState(selectedTask ? selectedTask.status : 0);
 
   const saveTask = () => {
     if (selectedTask) {
@@ -13,15 +13,17 @@ const AddTask = ({onToggleIsAddTaskModal, selectedTask, isAddTaskOpen, onEditTas
         ...selectedTask, title, status
       };
       onEditTask(data);
+      onToggleIsAddTaskModal();
     } else {
-      const data = {
-        title, status,
-        id: (Math.random() * 10000).toFixed()
-      };
-      onAddTask(data)
+      if (title !== "") {
+        const data = {
+          title, status,
+          id: (Math.random() * 10000).toFixed()
+        };
+        onAddTask(data);
+        onToggleIsAddTaskModal();
+      }
     }
-    onToggleIsAddTaskModal();
-
   };
 
   return (
@@ -31,7 +33,7 @@ const AddTask = ({onToggleIsAddTaskModal, selectedTask, isAddTaskOpen, onEditTas
       </Modal.Header>
       <Modal.Body>
         <form>
-          <div  style={{width: 300}}>
+          <div>
             <label>Title</label>
             <div>
               <input
@@ -39,6 +41,7 @@ const AddTask = ({onToggleIsAddTaskModal, selectedTask, isAddTaskOpen, onEditTas
                 type="text"
                 placeholder="title"
                 value={title}
+                className="w-100 mb-2"
                 onChange={(e) => setTitle(e.target.value)}
               />
             </div>
@@ -46,7 +49,8 @@ const AddTask = ({onToggleIsAddTaskModal, selectedTask, isAddTaskOpen, onEditTas
           <div>
             <label>Status</label>
             <div>
-              <select name="favoriteColor" value={status} onChange={(e) => setStatus(e.target.value)}>
+              <select name="favoriteColor" value={status} className="w-100 mb-2"
+                      onChange={(e) => setStatus(e.target.value)}>
                 <option value={0}>Pending</option>
                 <option value={1}>In-progress</option>
                 <option value={2}>Completed</option>
